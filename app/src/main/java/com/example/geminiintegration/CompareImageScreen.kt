@@ -6,15 +6,15 @@ import android.provider.MediaStore
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.Button
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -24,7 +24,8 @@ import androidx.compose.ui.unit.dp
 import coil.compose.rememberAsyncImagePainter
 
 @Composable
-fun HomeScreen(viewModel: HomeViewModel = androidx.lifecycle.viewmodel.compose.viewModel()) {
+fun CompareImageScreen(viewModel: CompareImageViewModel = androidx.lifecycle.viewmodel.compose.viewModel()) {
+
     val context = LocalContext.current
     val galleryLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.GetContent(),
@@ -35,51 +36,50 @@ fun HomeScreen(viewModel: HomeViewModel = androidx.lifecycle.viewmodel.compose.v
                 } else {
                     MediaStore.Images.Media.getBitmap(context.contentResolver, it)
                 }
-                viewModel.setSelectedImageBitmapData(bitmap)
-                viewModel.onUriSelection(it)
+                viewModel.addPhotoToList(uri, bitmap)
             }
         }
     )
-    Column(modifier = Modifier.fillMaxSize().verticalScroll(rememberScrollState()), verticalArrangement = Arrangement.SpaceBetween) {
-        Column(
-            modifier = Modifier
-                .weight(1f)
-                .padding(48.dp)
-        ) {
-            viewModel.selectedImageUri.value?.let {
+    Column(modifier = Modifier.verticalScroll(rememberScrollState())) {
+        LazyRow {
+            items(viewModel.selectedPhotoList.toList().size) {
                 Image(
-                    painter = rememberAsyncImagePainter(model = it),
+                    painter = rememberAsyncImagePainter(model = viewModel.selectedPhotoList.toList()[it].first),
                     contentDescription = null,
                     modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(vertical = 24.dp),
+                        .size(140.dp)
+                        .padding(24.dp),
                     contentScale = ContentScale.Crop
                 )
-                TextField(
-                    modifier = Modifier.fillMaxWidth(),
-                    value = viewModel.suggestionText.value,
-                    onValueChange = viewModel::onSuggestionTextChanged
-                )
-                TextButton(
-                    modifier = Modifier.fillMaxWidth(),
-                    onClick = viewModel::onSuggestionClicked
-                ) {
-                    Text(text = "Suggestion")
-                }
+            }
 
-                Column {
-                    Text(text = viewModel.contentText.value)
+            item {
+                Button(onClick = { galleryLauncher.launch("image/*") }) {
+                    Text(text = "Add Photo")
                 }
-
             }
         }
 
-        TextButton(
-            modifier = Modifier.fillMaxWidth(),
-            onClick = { galleryLauncher.launch("image/*") }
-        ) {
-            Text(text = "Pick image")
-        }
-    }
+        if (viewModel.selectedPhotoList.toList().size >= 5) {
+            TextField(
+                modifier = Modifier.fillMaxWidth(),
+                value = viewModel.requestText.value,
+                onValueChange = viewModel::onRequestTextChangeListener
+            )
 
+            Button(onClick = viewModel::onCompareImages) {
+                Text(text = "Request")
+            }
+
+            Text(text = viewModel.contentText.value)
+        }
+
+
+        if (viewModel.contentText.value.isEmpty().not()) {
+            Button(onClick = viewModel::clearAll) {
+                Text(text = "Clear")
+            }
+        }
+
+    }
 }

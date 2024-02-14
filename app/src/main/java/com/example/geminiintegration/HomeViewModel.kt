@@ -2,6 +2,7 @@ package com.example.geminiintegration
 
 import android.graphics.Bitmap
 import android.net.Uri
+import android.util.Log
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -40,6 +41,7 @@ class HomeViewModel : ViewModel() {
     }
 
     fun onSuggestionClicked() {
+        Log.d("generativeModelrequest","onSuggestionClicked")
         if (selectedImageUri.value == null) return
         viewModelScope.launch {
             val response = generativeModel.generateContent(
@@ -48,7 +50,10 @@ class HomeViewModel : ViewModel() {
                     text(suggestionText.value)
                 }
             )
+            Log.d("generativeModelrequest","result")
             contentText.value = response.text ?: "Ai coktu hata verdi bir seyler"
+        }.invokeOnCompletion {
+            Log.d("generativeModelrequest","suggestion invokeOnCompletion")
         }
     }
 

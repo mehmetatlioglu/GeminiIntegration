@@ -5,6 +5,7 @@ import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
 import androidx.activity.ComponentActivity
+import androidx.activity.compose.BackHandler
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.compose.setContent
 import androidx.activity.result.contract.ActivityResultContracts
@@ -31,6 +32,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.zIndex
 import androidx.lifecycle.viewmodel.viewModelFactory
 import coil.compose.rememberAsyncImagePainter
 import com.example.geminiintegration.ui.theme.GeminiIntegrationTheme
@@ -53,14 +55,19 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun MainScreen(viewModel: MainViewModel = androidx.lifecycle.viewmodel.compose.viewModel()) {
+
+    BackHandler {
+        viewModel.onButtonClicked(null)
+    }
     Column(verticalArrangement = Arrangement.SpaceBetween) {
 
         Column {
             when (viewModel.selectedScreen.value) {
-                MainViewModel.Screens.HOME -> HomeScreen()
+                MainViewModel.Screens.PICK_IMAGE -> HomeScreen()
+                MainViewModel.Screens.COMPARE_IMAGE -> CompareImageScreen()
                 MainViewModel.Screens.CHAT -> ChatScreen()
                 else -> Column(
-                    modifier = Modifier.fillMaxSize(),
+                    modifier = Modifier.fillMaxWidth(),
                     verticalArrangement = Arrangement.Center,
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
@@ -69,11 +76,17 @@ fun MainScreen(viewModel: MainViewModel = androidx.lifecycle.viewmodel.compose.v
             }
         }
 
-        Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Absolute.SpaceAround) {
+        Row(modifier = Modifier.fillMaxWidth().zIndex(12f), horizontalArrangement = Arrangement.Absolute.SpaceAround) {
             Button(onClick = {
-                viewModel.onButtonClicked(MainViewModel.Screens.HOME)
+                viewModel.onButtonClicked(MainViewModel.Screens.PICK_IMAGE)
             }) {
-                Text("Home")
+                Text("Pick Img")
+            }
+
+            Button(onClick = {
+                viewModel.onButtonClicked(MainViewModel.Screens.COMPARE_IMAGE)
+            }) {
+                Text("Compare Img")
             }
 
             Button(onClick = { viewModel.onButtonClicked(MainViewModel.Screens.CHAT) }) {

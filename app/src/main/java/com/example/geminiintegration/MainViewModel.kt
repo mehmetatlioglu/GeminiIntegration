@@ -14,13 +14,14 @@ class MainViewModel : ViewModel() {
     var selectedScreen = mutableStateOf<Screens?>(null)
         private set
 
-    fun onButtonClicked(type: Screens) {
+    fun onButtonClicked(type: Screens?) {
         selectedScreen.value = type
     }
 
 
     enum class Screens {
-        HOME,
+        PICK_IMAGE,
+        COMPARE_IMAGE,
         CHAT
     }
 
