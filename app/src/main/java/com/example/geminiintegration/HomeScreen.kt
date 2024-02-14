@@ -40,7 +40,11 @@ fun HomeScreen(viewModel: HomeViewModel = androidx.lifecycle.viewmodel.compose.v
             }
         }
     )
-    Column(modifier = Modifier.fillMaxSize().verticalScroll(rememberScrollState()), verticalArrangement = Arrangement.SpaceBetween) {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .verticalScroll(rememberScrollState()), verticalArrangement = Arrangement.SpaceBetween
+    ) {
         Column(
             modifier = Modifier
                 .weight(1f)
@@ -67,7 +71,7 @@ fun HomeScreen(viewModel: HomeViewModel = androidx.lifecycle.viewmodel.compose.v
                     Text(text = "Suggestion")
                 }
 
-                Column {
+                Column(modifier = Modifier.verticalScroll(rememberScrollState())) {
                     Text(text = viewModel.contentText.value)
                 }
 

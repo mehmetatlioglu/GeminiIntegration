@@ -60,7 +60,7 @@ fun CompareImageScreen(viewModel: CompareImageViewModel = androidx.lifecycle.vie
             }
         }
 
-        if (viewModel.selectedPhotoList.toList().size >= 5) {
+        if (viewModel.selectedPhotoList.toList().size >= 2) {
             TextField(
                 modifier = Modifier.fillMaxWidth(),
                 value = viewModel.requestText.value,

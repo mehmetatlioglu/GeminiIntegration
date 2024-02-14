@@ -4,7 +4,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -44,19 +43,23 @@ fun ChatScreen(viewModel: ChatScreenViewModel = androidx.lifecycle.viewmodel.com
                     }
                 }
             }
-        }
-        Column {
-            TextField(
-                modifier = Modifier.fillMaxWidth(),
-                value = viewModel.messageText.value,
-                onValueChange = viewModel::onMessageTextChagned
-            )
-            TextButton(
-                modifier = Modifier.fillMaxWidth(),
-                onClick = viewModel::chatGemini
-            ) {
-                Text(text = "Chat With Gemini")
+
+            item {
+                Column {
+                    TextField(
+                        modifier = Modifier.fillMaxWidth(),
+                        value = viewModel.messageText.value,
+                        onValueChange = viewModel::onMessageTextChagned
+                    )
+                    TextButton(
+                        modifier = Modifier.fillMaxWidth(),
+                        onClick = viewModel::chatGemini
+                    ) {
+                        Text(text = "Chat With Gemini")
+                    }
+                }
             }
         }
+
     }
 }
