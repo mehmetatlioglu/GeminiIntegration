@@ -63,31 +63,40 @@ fun MainScreen(viewModel: MainViewModel = androidx.lifecycle.viewmodel.compose.v
 
         Column {
             when (viewModel.selectedScreen.value) {
+                MainViewModel.Screens.SIMPLE_API_CALL -> SimpleApiCallScreen()
                 MainViewModel.Screens.PICK_IMAGE -> HomeScreen()
                 MainViewModel.Screens.COMPARE_IMAGE -> CompareImageScreen()
                 MainViewModel.Screens.CHAT -> ChatScreen()
                 else -> Column(
-                    modifier = Modifier.fillMaxWidth(),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = 48.dp),
                     verticalArrangement = Arrangement.Center,
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    Text("İstedeğin sayfayı sec")
+                    Text("Yeni Başlayanlar için Android")
                 }
             }
         }
 
-        Row(modifier = Modifier.fillMaxWidth().zIndex(12f), horizontalArrangement = Arrangement.Absolute.SpaceAround) {
+        Row(modifier = Modifier
+            .fillMaxWidth()
+            .zIndex(12f), horizontalArrangement = Arrangement.Absolute.SpaceAround) {
+            Button(onClick = {
+                viewModel.onButtonClicked(MainViewModel.Screens.SIMPLE_API_CALL)
+            }) {
+                Text("RiclAnd Morty")
+            }
             Button(onClick = {
                 viewModel.onButtonClicked(MainViewModel.Screens.PICK_IMAGE)
             }) {
                 Text("Pick Img")
             }
-
-            Button(onClick = {
+            /*Button(onClick = {
                 viewModel.onButtonClicked(MainViewModel.Screens.COMPARE_IMAGE)
             }) {
                 Text("Compare Img")
-            }
+            }*/
 
             Button(onClick = { viewModel.onButtonClicked(MainViewModel.Screens.CHAT) }) {
                 Text("Chat")

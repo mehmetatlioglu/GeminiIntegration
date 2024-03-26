@@ -20,6 +20,7 @@ class MainViewModel : ViewModel() {
 
 
     enum class Screens {
+        SIMPLE_API_CALL,
         PICK_IMAGE,
         COMPARE_IMAGE,
         CHAT
