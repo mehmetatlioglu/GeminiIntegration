@@ -82,21 +82,21 @@ fun MainScreen(viewModel: MainViewModel = androidx.lifecycle.viewmodel.compose.v
         Row(modifier = Modifier
             .fillMaxWidth()
             .zIndex(12f), horizontalArrangement = Arrangement.Absolute.SpaceAround) {
-            Button(onClick = {
+            /*Button(onClick = {
                 viewModel.onButtonClicked(MainViewModel.Screens.SIMPLE_API_CALL)
             }) {
                 Text("RiclAnd Morty")
-            }
+            }*/
             Button(onClick = {
                 viewModel.onButtonClicked(MainViewModel.Screens.PICK_IMAGE)
             }) {
                 Text("Pick Img")
             }
-            /*Button(onClick = {
+            Button(onClick = {
                 viewModel.onButtonClicked(MainViewModel.Screens.COMPARE_IMAGE)
             }) {
                 Text("Compare Img")
-            }*/
+            }
 
             Button(onClick = { viewModel.onButtonClicked(MainViewModel.Screens.CHAT) }) {
                 Text("Chat")

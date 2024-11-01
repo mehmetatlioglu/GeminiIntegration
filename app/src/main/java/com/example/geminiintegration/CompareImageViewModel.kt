@@ -14,7 +14,7 @@ import kotlinx.coroutines.launch
 class CompareImageViewModel : ViewModel() {
 
     val generativeModel = GenerativeModel(
-        modelName = "gemini-pro-vision", //gemini vision da olabilir.
+        modelName = "gemini-1.5-flash", //gemini vision da olabilir.
         apiKey = HomeViewModel.geminiApiKey
     )
 

@@ -4,9 +4,12 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -20,45 +23,47 @@ import androidx.compose.ui.unit.dp
 @Composable
 fun ChatScreen(viewModel: ChatScreenViewModel = androidx.lifecycle.viewmodel.compose.viewModel()) {
     Column(verticalArrangement = Arrangement.SpaceBetween) {
-        LazyColumn {
+        LazyColumn(modifier = Modifier.weight(1f)) {
             items(viewModel.answerList.size) {
                 val answer = viewModel.answerList[it]
-                Card(
+                Row(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(16.dp)
+                        .padding(16.dp),
+                    horizontalArrangement = if (answer.type == Type.AI) Arrangement.Start else Arrangement.End
                 ) {
                     Row(
                         modifier = Modifier
                             .background(
-                                if (answer.type == Type.AI) Color.Blue.copy(0.5f) else Color.Cyan.copy(0.5f)
+                                if (answer.type == Type.AI) Color.Blue.copy(0.5f) else Color.DarkGray.copy(0.5f),
+                                shape = RoundedCornerShape(24.dp)
                             )
                     ) {
                         Text(
                             modifier = Modifier
-                                .padding(20.dp)
-                                .fillMaxWidth(), text = answer.message,
-                            textAlign = if (answer.type == Type.AI) TextAlign.Start else TextAlign.End
+                                .padding(20.dp), text = answer.message
                         )
                     }
                 }
             }
+        }
 
-            item {
-                Column {
-                    TextField(
-                        modifier = Modifier.fillMaxWidth(),
-                        value = viewModel.messageText.value,
-                        onValueChange = viewModel::onMessageTextChagned
-                    )
-                    TextButton(
-                        modifier = Modifier.fillMaxWidth(),
-                        onClick = viewModel::chatGemini
-                    ) {
-                        Text(text = "Chat With Gemini")
-                    }
-                }
+        Column {
+            TextField(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(24.dp),
+                value = viewModel.messageText.value,
+                onValueChange = viewModel::onMessageTextChagned
+            )
+            TextButton(
+                modifier = Modifier.fillMaxWidth(),
+                onClick = viewModel::chatGemini
+            ) {
+                Text(text = "Chat With Gemini")
             }
+
+            Spacer(modifier = Modifier.size(24.dp))
         }
 
     }
